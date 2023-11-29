@@ -4,6 +4,7 @@ from langchain.chains import LLMChain
 from langchain.schema.document import Document
 
 import config
+from utils import *
 
 
 def format_context(documents: list[Document]) -> str:
@@ -49,7 +50,7 @@ Keep the context of the CHAT HISTORY in the standalone question.'''
 def create_llm_conversation(chat_history: list) -> list[list]:
     try:
         query = chat_history[-1][0]
-        vector_db = Qdrant(client=config.client, embeddings=config.embedding_function,
+        vector_db = Qdrant(client=config.qdrant_client, embeddings=config.embedding_function,
                            collection_name=config.COLLECTION_NAME)
         system_prompt = '''You are a helpful assistant. \
 Use the following pieces of CONTEXT and CHAT HISTORY to answer the QUESTION at the end. \
@@ -69,16 +70,13 @@ Keep an informative tone.'''
             verbose=True
         )
         condense_query = condense_user_query(query, chat_history)
-        print(f'Condensed query - {condense_query}')
         searched_docs = vector_db.similarity_search(condense_query)
-        print(searched_docs)
         formated_chat_history = format_chat_history(chat_history)
         formated_context = format_context(searched_docs)
         response = llm_chain.predict(
             question=query, context=formated_context, chat_history=formated_chat_history)
         response = response.strip()
         chat_history[-1][1] = response
-        print(f'Response - {response}')
         return chat_history
     except:
         chat_history.append((chat_history[-1][0], config.ERROR_MESSAGE))
@@ -88,3 +86,9 @@ Keep an informative tone.'''
 def handle_user_query(message: str, chat_history: list[tuple]) -> tuple:
     chat_history += [[message, None]]
     return '', chat_history
+
+
+def handle_user_voice_query(audio_file_path: str, chat_history: list[tuple]) -> tuple:
+    audio_to_text = transcribe_audio(audio_file_path)
+    chat_history += [[audio_to_text, None]]
+    return None, chat_history
