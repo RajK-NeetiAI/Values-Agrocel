@@ -1,6 +1,6 @@
 import gradio as gr
 
-from conversation import create_llm_conversation, handle_user_query, handle_user_voice_query
+from conversation import *
 
 with gr.Blocks() as text_chat:
     chatbot = gr.Chatbot(label='Talk to the Douments', bubble_full_width=False)
@@ -19,21 +19,28 @@ with gr.Blocks() as text_chat:
 
 with gr.Blocks() as voice_chat:
     chatbot = gr.Chatbot(label='Talk to the Douments', bubble_full_width=False)
-    voice_chat_audio_file_path = gr.Audio(
-        sources=["microphone"], label='Record your query', type='filepath')
+    audio_msg = gr.Textbox(visible=False)
+    
     with gr.Row():
-        voice_chat_submit = gr.Button('Submit', variant='primary')
-        voice_chat_clear = gr.ClearButton(
-            [voice_chat_audio_file_path, chatbot], variant='stop')
+        voice_chat_audio_file_path = gr.Audio(
+            sources=["microphone"], label='Record your query', type='filepath')
+        output_audio = gr.Audio(label='Chatbot response', type='filepath')
+    
+    voice_chat_clear = gr.ClearButton(
+        [voice_chat_audio_file_path, chatbot, output_audio], variant='stop')
 
-    voice_chat_submit.click(
+    voice_chat_audio_file_path.stop_recording(
         handle_user_voice_query,
         [voice_chat_audio_file_path, chatbot],
         [voice_chat_audio_file_path, chatbot]
     ).then(
-        create_llm_conversation,
+        create_llm_conversation_audio,
         [chatbot],
-        [chatbot]
+        [chatbot, audio_msg]
+    ).then(
+        set_audio_output,
+        [audio_msg],
+        [output_audio]
     )
 
 
