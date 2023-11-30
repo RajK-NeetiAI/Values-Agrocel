@@ -20,12 +20,12 @@ with gr.Blocks() as text_chat:
 with gr.Blocks() as voice_chat:
     chatbot = gr.Chatbot(label='Talk to the Douments', bubble_full_width=False)
     audio_msg = gr.Textbox(visible=False)
-    
+
     with gr.Row():
         voice_chat_audio_file_path = gr.Audio(
             sources=["microphone"], label='Record your query', type='filepath')
         output_audio = gr.Audio(label='Chatbot response', type='filepath')
-    
+
     voice_chat_clear = gr.ClearButton(
         [voice_chat_audio_file_path, chatbot, output_audio], variant='stop')
 

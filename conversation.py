@@ -83,7 +83,7 @@ Keep an informative tone.'''
         return chat_history
 
 
-def create_llm_conversation_audio(chat_history: list, audio_msg: str) -> list[list]:
+def create_llm_conversation_audio(chat_history: list) -> list[list]:
     try:
         query = chat_history[-1][0]
         vector_db = Qdrant(client=config.qdrant_client, embeddings=config.embedding_function,
