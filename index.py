@@ -1,5 +1,5 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import DirectoryLoader, Docx2txtLoader
+from langchain.document_loaders import DirectoryLoader, TextLoader
 from langchain.vectorstores.qdrant import Qdrant
 
 import config
@@ -9,8 +9,8 @@ def create_index(document_dir: str) -> str:
     try:
         loader = DirectoryLoader(
             document_dir,
-            glob='**/*.docx',
-            loader_cls=Docx2txtLoader,
+            glob='**/*.txt',
+            loader_cls=TextLoader,
             show_progress=True
         )
         documents = loader.load()

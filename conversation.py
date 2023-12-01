@@ -10,7 +10,7 @@ from utils import *
 def format_context(documents: list[Document]) -> str:
     formated_context = ''
     for doc in documents:
-        formated_context += f'\n{doc.page_content}\n'
+        formated_context += f'\n{doc.page_content.strip()}\n'
     return formated_context
 
 

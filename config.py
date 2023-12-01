@@ -24,7 +24,7 @@ embedding_function = OpenAIEmbeddings(
 chat_model = ChatOpenAI(
     temperature=0,
     openai_api_key=OPENAI_API_KEY,
-    model_name='gpt-4-1106-preview'
+    model_name='gpt-3.5-turbo-1106'
 )
 
 openai_client = OpenAI(
