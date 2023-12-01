@@ -15,10 +15,7 @@ ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
 COLLECTION_NAME = 'values_database'
 QDRANT_URL = 'http://localhost:6333'
 
-qdrant_client = QdrantClient(
-    host='localhost',
-    port=6333
-)
+qdrant_client = QdrantClient(url=QDRANT_URL)
 
 embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY
@@ -27,7 +24,7 @@ embedding_function = OpenAIEmbeddings(
 chat_model = ChatOpenAI(
     temperature=0,
     openai_api_key=OPENAI_API_KEY,
-    model_name='gpt-4'
+    model_name='gpt-4-1106-preview'
 )
 
 openai_client = OpenAI(
