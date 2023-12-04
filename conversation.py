@@ -54,7 +54,6 @@ def create_llm_conversation(chat_history: list) -> list[list]:
                            collection_name=config.COLLECTION_NAME)
         system_prompt = '''You are a helpful assistant. \
 Use the following pieces of CONTEXT and CHAT HISTORY to answer the QUESTION at the end. \
-Keep all you answers short and concise. \
 If you don't know the answer and the CONTEXT doesn't contain the answer truthfully say I don't know. \
 Keep an informative tone.'''
         instruction = "CONTEXT: {context}\n\nCHAT HISTORY:\n\n{chat_history}\n\nHUMAN: {question}\n\nAI:"
@@ -90,7 +89,6 @@ def create_llm_conversation_audio(chat_history: list) -> list[list]:
                            collection_name=config.COLLECTION_NAME)
         system_prompt = '''You are a helpful assistant. \
 Use the following pieces of CONTEXT and CHAT HISTORY to answer the QUESTION at the end. \
-Keep all you answers short and concise. \
 If you don't know the answer and the CONTEXT doesn't contain the answer truthfully say I don't know. \
 Keep an informative tone.'''
         instruction = "CONTEXT: {context}\n\nCHAT HISTORY:\n\n{chat_history}\n\nHUMAN: {question}\n\nAI:"
@@ -148,7 +146,6 @@ def create_llm_conversation_backend(chat_history: list[list], query: str) -> str
                            collection_name=config.COLLECTION_NAME)
         system_prompt = '''You are a helpful assistant. \
 Use the following pieces of CONTEXT and CHAT HISTORY to answer the QUESTION at the end. \
-Keep all you answers short and concise. \
 If you don't know the answer and the CONTEXT doesn't contain the answer truthfully say I don't know. \
 Keep an informative tone.'''
         instruction = "CONTEXT: {context}\n\nCHAT HISTORY:\n\n{chat_history}\n\nHUMAN: {question}\n\nAI:"
