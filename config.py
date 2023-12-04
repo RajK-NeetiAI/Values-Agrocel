@@ -12,7 +12,7 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
 
-COLLECTION_NAME = 'values_database'
+COLLECTION_NAME = 'values_knowledge'
 QDRANT_URL = 'http://localhost:6333'
 
 qdrant_client = QdrantClient(url=QDRANT_URL)
