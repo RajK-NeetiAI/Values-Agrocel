@@ -13,7 +13,7 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
 
 COLLECTION_NAME = 'values_knowledge'
-QDRANT_URL = 'http://localhost:6333'
+QDRANT_URL = os.getenv('QDRANT_URL')
 
 qdrant_client = QdrantClient(url=QDRANT_URL)
 
@@ -24,7 +24,7 @@ embedding_function = OpenAIEmbeddings(
 chat_model = ChatOpenAI(
     temperature=0,
     openai_api_key=OPENAI_API_KEY,
-    model_name='gpt-3.5-turbo-1106'
+    model_name='gpt-4'
 )
 
 openai_client = OpenAI(
