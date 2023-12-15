@@ -18,7 +18,7 @@ with gr.Blocks() as text_chat:
     )
 
 with gr.Blocks() as voice_chat:
-    chatbot = gr.Chatbot(label='Talk to the Douments', bubble_full_width=False)
+    chatbot = gr.Chatbot(label='Values Knowledge', bubble_full_width=False)
     audio_msg = gr.Textbox(visible=False)
 
     with gr.Row():
