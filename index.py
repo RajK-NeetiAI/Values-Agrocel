@@ -15,8 +15,8 @@ def create_index(document_dir: str) -> str:
         )
         documents = loader.load()
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1024,
-            chunk_overlap=16
+            chunk_size=2048,
+            chunk_overlap=32
         )
         texts = text_splitter.split_documents(documents)
         Qdrant.from_documents(
