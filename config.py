@@ -21,10 +21,12 @@ embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY
 )
 
+OPENAI_MODEL_NAME = 'gpt-4'
+
 chat_model = ChatOpenAI(
     temperature=0,
     openai_api_key=OPENAI_API_KEY,
-    model_name='gpt-4'
+    model_name=OPENAI_MODEL_NAME
 )
 
 openai_client = OpenAI(
