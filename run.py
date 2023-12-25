@@ -1,11 +1,19 @@
 import gradio as gr
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from gradio_ui import demo
 from conversation import create_llm_conversation_backend
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ValuesChatRequest(BaseModel):
