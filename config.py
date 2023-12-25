@@ -9,6 +9,7 @@ from openai import OpenAI
 load_dotenv(find_dotenv())
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+OPENAI_MODEL_NAME = os.getenv('OPENAI_MODEL_NAME')
 
 ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
 
@@ -20,8 +21,6 @@ qdrant_client = QdrantClient(url=QDRANT_URL)
 embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY
 )
-
-OPENAI_MODEL_NAME = 'gpt-4'
 
 chat_model = ChatOpenAI(
     temperature=0,
