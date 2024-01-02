@@ -33,10 +33,13 @@ def home():
 def values_chat(values_chat_request: ValuesChatRequest):
     query = values_chat_request.query
     chat_history = values_chat_request.chat_history
+    print(f'Query - {query}')
     response = create_llm_conversation_backend(chat_history, query)
+    print(f'Response - {response}')
     return {
         'status': 1,
-        'response': response
+        'response': response,
+        'thread_id': ''
     }
 
 
