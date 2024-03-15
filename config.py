@@ -12,7 +12,6 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 OPENAI_MODEL_NAME = os.getenv('OPENAI_MODEL_NAME')
 
 ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
-DIALOGFLOW_LANGUAGE = 'en-US'
 
 COLLECTION_NAME = 'values_knowledge'
 QDRANT_URL = os.getenv('QDRANT_URL')
