@@ -23,7 +23,8 @@ def create_index(document_dir: str) -> str:
             texts,
             config.embedding_function,
             collection_name=config.COLLECTION_NAME,
-            url=config.QDRANT_URL
+            url=config.QDRANT_URL,
+            api_key=config.QDRANT_API_KEY
         )
         return 'Documents uploaded and index created successfully. You can chat now.'
     except Exception as e:

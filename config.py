@@ -12,11 +12,16 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 OPENAI_MODEL_NAME = os.getenv('OPENAI_MODEL_NAME')
 
 ERROR_MESSAGE = 'We are facing a technical issue at this moment.'
+DIALOGFLOW_LANGUAGE = 'en-US'
 
 COLLECTION_NAME = 'values_knowledge'
 QDRANT_URL = os.getenv('QDRANT_URL')
+QDRANT_API_KEY = os.getenv('QDRANT_API_KEY')
 
-qdrant_client = QdrantClient(url=QDRANT_URL)
+K = 10
+
+qdrant_client = QdrantClient(
+    url=QDRANT_URL, https=True, api_key=QDRANT_API_KEY)
 
 embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY
