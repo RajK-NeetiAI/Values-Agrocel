@@ -6,8 +6,6 @@ from langchain.schema.document import Document
 import config
 from utils import *
 
-NUMBER_OF_DOCUMENTS = 6
-
 
 def format_context(documents: list[Document]) -> str:
     formated_context = ''
@@ -34,7 +32,7 @@ Keep an informative tone.'''
     return template
 
 
-def condense_user_query(query: str, chat_history: list[list]) -> tuple:
+def condense_user_query(query: str, chat_history: list[list[str, str]]) -> str:
     system_prompt = '''Given the following CHAT HISTORY and a FOLLOW UP QUESTION, \
 rephrase the FOLLOW UP QUESTION to be a STANDALONE QUESTION in its original language. \
 Keep the context of the CHAT HISTORY in the standalone question.'''
@@ -59,7 +57,7 @@ Keep the context of the CHAT HISTORY in the standalone question.'''
     return response
 
 
-def create_llm_conversation(chat_history: list) -> list[list]:
+def create_llm_conversation(chat_history: list[list[str, str]]) -> list[list[str, str]]:
     try:
         query = chat_history[-1][0]
         vector_db = Qdrant(client=config.qdrant_client, embeddings=config.embedding_function,
@@ -77,7 +75,7 @@ def create_llm_conversation(chat_history: list) -> list[list]:
         )
         condense_query = condense_user_query(query, chat_history)
         searched_docs = vector_db.similarity_search(
-            condense_query, k=NUMBER_OF_DOCUMENTS)
+            condense_query, k=config.K)
         formated_chat_history = format_chat_history(chat_history)
         formated_context = format_context(searched_docs)
         response = llm_chain.predict(
@@ -90,51 +88,9 @@ def create_llm_conversation(chat_history: list) -> list[list]:
         return chat_history
 
 
-def create_llm_conversation_audio(chat_history: list) -> list[list]:
-    try:
-        query = chat_history[-1][0]
-        vector_db = Qdrant(client=config.qdrant_client, embeddings=config.embedding_function,
-                           collection_name=config.COLLECTION_NAME)
-        template = get_system_template()
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                SystemMessagePromptTemplate.from_template(template)
-            ]
-        )
-        llm_chain = LLMChain(
-            llm=config.chat_model,
-            prompt=prompt,
-            verbose=True
-        )
-        condense_query = condense_user_query(query, chat_history)
-        searched_docs = vector_db.similarity_search(
-            condense_query, k=NUMBER_OF_DOCUMENTS)
-        formated_chat_history = format_chat_history(chat_history)
-        formated_context = format_context(searched_docs)
-        response = llm_chain.predict(
-            question=query, context=formated_context, chat_history=formated_chat_history)
-        response = response.strip()
-        chat_history[-1][1] = response
-        return chat_history, response
-    except:
-        chat_history.append((chat_history[-1][0], config.ERROR_MESSAGE))
-        return chat_history, config.ERROR_MESSAGE
-
-
-def handle_user_query(message: str, chat_history: list[tuple]) -> tuple:
+def handle_user_query(message: str, chat_history: list[list[str, str]]) -> tuple[str, list[list[str, str]]]:
     chat_history += [[message, None]]
     return '', chat_history
-
-
-def handle_user_voice_query(audio_file_path: str, chat_history: list[tuple]) -> tuple:
-    audio_to_text = transcribe_audio(audio_file_path)
-    chat_history += [[audio_to_text, None]]
-    return None, chat_history
-
-
-def set_audio_output(text: str) -> str:
-    audio_file_path = create_speech(text)
-    return audio_file_path
 
 
 def format_chat_history_backend(chat_history: list[list[str, str]]) -> str:
@@ -144,7 +100,7 @@ def format_chat_history_backend(chat_history: list[list[str, str]]) -> str:
     return formated_chat_history
 
 
-def create_llm_conversation_backend(chat_history: list[list], query: str) -> str:
+def create_llm_conversation_backend(chat_history: list[list[str, str]], query: str) -> str:
     try:
         vector_db = Qdrant(client=config.qdrant_client, embeddings=config.embedding_function,
                            collection_name=config.COLLECTION_NAME)
@@ -161,7 +117,7 @@ def create_llm_conversation_backend(chat_history: list[list], query: str) -> str
         )
         condense_query = condense_user_query(query, chat_history)
         searched_docs = vector_db.similarity_search(
-            condense_query, k=NUMBER_OF_DOCUMENTS)
+            condense_query, k=config.K)
         formated_chat_history = format_chat_history_backend(chat_history)
         formated_context = format_context(searched_docs)
         response = llm_chain.predict(
